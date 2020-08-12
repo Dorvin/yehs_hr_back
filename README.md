@@ -3,6 +3,8 @@
 ## Dependency
 1. venv 설치
     - virtualenv==16.4.3
+1. venv 생성
+    - virtualenv .env
 1. venv 구동
     - source .env/bin/activate
 1. 의존성 설치
