@@ -30,12 +30,12 @@ def event_detail(request, pk):
     elif request.method == 'POST':
         params = json.loads(request.body.decode("utf-8"))
         event = Event.objects.get(pk=pk)
-        if params.get('name', '') == '' or params.get('category', '') == '' or params.get('date', '') == '':
-            content = {'warring': 'empty name or category or date is not allowed'}
-            return Response(content, status=status.HTTP_400_BAD_REQUEST)
-        event.name = params.get('name', '')
-        event.category = params.get('category', '')
-        event.date = params.get('date', '')
+        if params.get('name', '') != '':
+            event.name = params.get('name', '')
+        if params.get('category', '') != '':
+            event.category = params.get('category', '')
+        if params.get('date', '') != '':
+            event.date = params.get('date', '')
         event.save()
         serializer = EventSerializer(event)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -79,11 +79,16 @@ def member_detail(request, code):
     elif request.method == 'POST':
         params = json.loads(request.body.decode("utf-8"))
         member = Member.objects.get(code=code)
-        member.name = params.get('name', '')
-        member.email = params.get('email', '')
-        member.phone = params.get('phone', '')
-        member.univ = params.get('univ', '')
-        member.major = params.get('major', '')
+        if params.get('name', '') != '':
+            member.name = params.get('name', '')
+        if params.get('email', '') != '':
+            member.email = params.get('email', '')
+        if params.get('phone', '') != '':
+            member.phone = params.get('phone', '')
+        if params.get('univ', '') != '':
+            member.univ = params.get('univ', '')
+        if params.get('major', '') != '':
+            member.major = params.get('major', '')
         member.save()
         serializer = MemberSerializer(member)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
