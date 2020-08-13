@@ -16,4 +16,4 @@ class EventSerializer(serializers.ModelSerializer):
     participants = MemberSerializer(many=True, read_only=True)
     class Meta:
         model = Event
-        fields = ('id', 'name', 'category', 'participants')
+        fields = ('id', 'name', 'category', 'date', 'participants')
