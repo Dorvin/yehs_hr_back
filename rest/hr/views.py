@@ -115,12 +115,36 @@ def event_register_member(request, pk):
 @api_view(['POST'])
 def success_member_list(request):
     params = json.loads(request.body.decode("utf-8"))
+    start = int(params.get('start', '-1'))
+    end = int(params.get('end', '-1'))
+    academic = int(params.get('academic', '-1'))
+    volunteer = int(params.get('volunteer', '-1'))
+    society = int(params.get('society', '-1'))
+    fn = int(params.get('fn', '-1'))
+    if -1 in (start, end, academic, volunteer, society, fn):
+        content = {'warring': 'empty start or end or academic or volunteer or society or fn is not allowed'}
+        return Response(content, status=status.HTTP_400_BAD_REQUEST)
     members = Member.objects.all()
     success_members = []
     for member in members:
         events = member.events.all()
-        condition = True
+        condition = False
         # some logics about condtion here
+        fn_of_member = int(member.fn)
+        # filter out fn
+        if fn != 0 and fn_of_member != fn:
+            continue
+        count = {
+            'academic': 0,
+            'volunteer': 0,
+            'society': 0
+        }
+        for event in events:
+            date = int(event.date)
+            if start <= date and date <= end:
+                count[event.category] += 1
+        if count['academic'] >= academic and count['volunteer'] >= volunteer and count['society'] >= society:
+            condition = True
         if condition:
             serializer = MemberSerializer(member)
             success_members.append(serializer.data)

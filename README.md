@@ -401,6 +401,18 @@
 - success/(POST)
     - request body
     ```
+    # start and end attributes must be specified
+    # start <= date <= end
+    # for academic, volunteer, society attributes, written number(n) means that to success at least n participation is required
+    # for fn, 0 means don't care, for the other (n) It means that I want to get info about only member with fn = n
+        {
+            "start": "202002",
+            "end": "202008",
+            "academic": "1",
+            "volunteer": "1",
+            "society": "0",
+            "fn": "250"
+        }
     ```
     - response body
     ```
