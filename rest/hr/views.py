@@ -130,7 +130,9 @@ def success_member_list(request):
         events = member.events.all()
         condition = False
         # some logics about condtion here
-        fn_of_member = int(member.fn)
+        fn_of_member = -1
+        if member.fn != "":
+            fn_of_member = int(member.fn)
         # filter out fn
         if fn != 0 and fn_of_member != fn:
             continue
