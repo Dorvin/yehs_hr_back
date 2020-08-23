@@ -56,7 +56,7 @@ def member_list(request):
         if len(member_infos) == 0:
             content = {'warring': 'empty list of member_infos is not allowed'}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
-        count = 0
+        register_members = []
         for member_info in member_infos:
             if member_info.get('code', '') == '' or member_info.get('name', '') == '':
                 content = {'warring': 'empty code or name is not allowed'}
@@ -66,9 +66,9 @@ def member_list(request):
                         yn=member_info.get('yn', ''), fn=member_info.get('fn', ''), \
                         univ=member_info.get('univ', ''), major=member_info.get('major', ''))
             member.save()
-            count += 1
-        content = {'success': f'{count} members have been successfully created'}
-        return Response(content, status=status.HTTP_201_CREATED)
+            serializer = MemberSerializer(member)
+            register_members.append(serializer.data)
+        return Response(register_members, status=status.HTTP_201_CREATED)
 
 @api_view(['GET', 'POST', 'DELETE'])
 def member_detail(request, code):
